@@ -2,11 +2,9 @@
 
 wm title . {Simulator for Swingle}
 
-#input file pathname here
-pack [labelframe .lf1 -text "Input File"]
+set path ""
 
 #create frame for quit button
-
 frame .qframe -borderwidth 10
 pack .qframe -side top -fill x
 
@@ -14,6 +12,17 @@ pack .qframe -side top -fill x
 button .qframe.quit -text Quit -command exit
 pack .qframe.quit -side right
 pack .qframe -side top -fill both -expand true
+
+#create frame for path
+frame .pwdpath -borderwidth 10
+pack .pwdpath -side top -fill x
+
+#create entry for path
+label .pwdpath.lbl -text "Path:" -padx 0
+entry .pwdpath.fpath -width 20 -relief sunken -textvariable workingdct
+pack .pwdpath.lbl -side left
+pack .pwdpath.fpath -side left -fill x -expand true
+
 ###########
 #Assembler#
 ###########
@@ -101,11 +110,14 @@ pack .dframe.debug -side left -fill x -expand true
 
 
 proc assemble {} {
-    .dframe.debug insert end "-"
+    global path
+    set path [.pwdpath.fpath get]
+    set fname [.assm.fpath1 get]
+    .dframe.debug insert end $path$fname
 }
 
 proc linknload {} {
-
+    .dframe.debug insert end "$"
 }
 
 proc simulate {} {
