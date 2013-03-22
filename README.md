@@ -20,14 +20,14 @@ Label(opt) opcode operand1, operand2(opt)
 + Immediate Addressing (Data given in instruction)
 + Indirect Addressing (use of M)
 
-Register Addressing and Indirect Addressing format
-XXYYZZ
-(XX)->Opcode
-(YY)->Operand1
-(ZZ)->Operand2
+Register Addressing and Indirect Addressing format:
++ XXYYZZ
+ (XX)->Opcode
+ (YY)->Operand1
+ (ZZ)->Operand2
 
-Immediate Addressing Format
-XXYYZZ
-(XX)->Opcode
-(YY)->operand1
-(ZZ)->value
+Immediate Addressing Format: 
++ XXYYZZ
+  (XX)->Opcode
+  (YY)->operand1
+  (ZZ)->value
