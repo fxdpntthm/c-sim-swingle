@@ -1,0 +1,12 @@
+﻿    START 101
+    LDA one
+    INC
+    STA result
+result ds 1
+one dc ’1′
+    STOP
+
+
+
+ Error at line 1 :: Illegal register START
+ Error at line 1 :: Unknown mnemonics: ﻿
