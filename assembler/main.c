@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 static int memoryMap[4096],lineCtr=1,locCtr=0,symCtr=0,litCtr=0,tabCtr=0,address;
 char c='\0', name[6]="Sample";
@@ -416,7 +417,7 @@ void pass1(FILE *fe,FILE *fo)
                             locCtr+=atoi(buf.op2);
                             break;
                     case 2:
-                            fprintf(fo,"00 0 00%d\n",buf.op2);
+                            fprintf(fo,"00 0 00%d\n",*buf.op2);
                             UpdateSYMTAB(fe);
                             locCtr++;
                             break;
@@ -504,10 +505,10 @@ void objectFile(FILE *fop, FILE *fob)
 int main(int argc, char *argv[])
 {
 FILE *fi,*fe,*fo,*fob;
-    fi=fopen("input.txt","r");
-    fe=fopen("input.txt","a+");
-    fo=fopen("intermediate.txt","w");
-    fob=fopen("object.txt","w");
+    fi=fopen("input","r");
+    fe=fopen("input","a+");
+    fo=fopen("intermediate","w");
+    fob=fopen("object","w");
     fprintf(fe,"\n\n");
     fflush(fi);
     while(c!=EOF)
@@ -518,14 +519,13 @@ FILE *fi,*fe,*fo,*fob;
     }
     pass2(fo);
     fclose(fo);
-    fo=fopen("intermediate.txt","r");
+    fo=fopen("intermediate","r");
     fflush(fo);
     objectFile(fo,fob);
     fclose(fi);
     fclose(fe);
     fclose(fo);
     fclose(fob);
-    getch();
-  system("PAUSE");
+    
   return 0;
 }

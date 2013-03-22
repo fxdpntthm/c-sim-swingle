@@ -1,0 +1,7 @@
+    START 101
+    LDA one
+    INR A
+    STA result
+result ds 1
+one dc ’1′
+    STOP
