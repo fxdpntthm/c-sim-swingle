@@ -20,12 +20,13 @@ int readChunk(FILE* fin){
     int count, i;
     int value;
     i = 0;
-    while(c = getc(fin) != ' ' && c != '\0' && c != '\n' && c != EOF){
+    c = getc(fin);
+    while(c != ' ' && c != '\0' && c != '\n' && c != EOF){
         convert_buffer[i] = c;
+        c = getc(fin);
         i++;
     }
     value = atoi(convert_buffer);
-    printf("%d ",value);
     return value;
 }
 void writeChunk(FILE *fout, int chunk){
@@ -51,8 +52,8 @@ int main (int argc, char *argv[]){
     }else{
         fin = fopen(argv[1],"r");
         fflush(fin);
-        //load all the program into the memory space
-        
+        //load memory space
+                
         for(i = 0; i < 4096; i++){
             memory[i] = readChunk(fin);
         }
@@ -70,7 +71,7 @@ int main (int argc, char *argv[]){
         if(strcmp(argv[2], "quiet") == 0){
             while(*PC != 0){
                 execute(PC);
-                PC = PC+1;
+                PC++;
             }
             for(i = 0; i < 4096; i++){
                 writeChunk(fout, memory[i]);
