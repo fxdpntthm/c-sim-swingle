@@ -2,18 +2,17 @@
 #include<string.h>
 #include<stdlib.h>
 
-#define LEN = 4096
+#define LEN 4096
 
 //registers and data space
 
-int memory[4096];
+int memory[LEN];
 
 int A = 0, B = 0, C = 0, D = 0;
 
-int SW, *SP = (memory+4095), *PC = memory;
+int SW, *SP = (memory+LEN), *PC = memory;
 
 //functions
-
 int readChunk(FILE* fin){
     char convert_buffer[10];
     char c;
@@ -54,7 +53,7 @@ int main (int argc, char *argv[]){
         fflush(fin);
         //load memory space
                 
-        for(i = 0; i < 4096; i++){
+        for(i = 0; i < LEN; i++){
             memory[i] = readChunk(fin);
         }
         close(fin);
@@ -63,24 +62,25 @@ int main (int argc, char *argv[]){
         A = B = C = D = 0;
         SW = 00;
         PC = memory;
-        SP = (memory + 4095);
+        SP = (memory + LEN);
         
         //simulate
         fout = fopen(argv[1],"w");
         fflush(fout);
         if(strcmp(argv[2], "quiet") == 0){
+            printf("\nQuiet Mode\n===========\n");
             while(*PC != 0){
                 execute(PC);
                 PC++;
             }
-            for(i = 0; i < 4096; i++){
+            for(i = 0; i < LEN; i++){
                 writeChunk(fout, memory[i]);
             }            
         }else if(strcmp(argv[2],"trace") == 0){
             printf("\nTrace Mode\n=============\n");
             while(*PC != 0){
                 execute(PC);
-                for(i = 0; i < 4096; i++){
+                for(i = 0; i < LEN; i++){
                     writeChunk(fout, memory[i]);
                 }
                 fputs("=================================", fout);
@@ -91,7 +91,7 @@ int main (int argc, char *argv[]){
             printf("\nStep Mode\n===========\n");
             while(*PC != 0){
                 execute(PC);
-                for(i = 0; i < 4096; i++){
+                for(i = 0; i < LEN; i++){
                     writeChunk(fout, memory[i]);
                 }
                 fputs("=================================", fout);
