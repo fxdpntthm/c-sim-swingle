@@ -27,6 +27,12 @@ int execute(int*);
  *SUI   03  2
  *MUL   04  1/2
  *MUI   05  2
+ *MOV   23  1/2
+ *MVI   24  2
+ *DIV   29  1/2
+ *DVI   30  2
+ *CMP   31  1/2
+ *CPI   32  2
  *LDA   06  2
  *STA   07  2
  *CAL   08  2
@@ -44,15 +50,9 @@ int execute(int*);
  *RNZ   20  1
  *RP    21  1
  *RNP   22  1
- *MOV   23  1/2
- *MVI   24  2
  *INR   25  1
  *DCR   26  1
  *PUSH  27  1
  *POP   28  1
- *DIV   29  3
- *DVI   30  1/2
- *CMP   31  1
- *CPI   32  2
- * 
+ *
  */
