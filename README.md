@@ -18,17 +18,22 @@ Label(opt) opcode operand1, operand2(opt)
 3 Addressing Modes
 + Register Addressing (Register number given)
 + Immediate Addressing (Data given in instruction)
-+ Indirect Addressing (use of M)
 
 Register Addressing and Indirect Addressing format:
 + XXYYZZ (ext ref)
  (XX)->Opcode
- (YY)->Operand1(can be registers or M)
+ (YY)->Operand1
  (ZZ)->Operand2
 
 Immediate Addressing Format(2 bytes): 
 + XXYY00 data
   (XX)->Opcode
-  (YY)->operand1(can be registers or M)
+  (YY)->operand1
   (00)->operand2
   data->stored in next byte
+  
+SW (Status word) format
+shows whether arithmetic operation had the following properties
++ Result is Zero/Non-Zero
++ Result is Negative/Positive
+

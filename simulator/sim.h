@@ -27,32 +27,40 @@ int execute();
  *SUI   03  2
  *MUL   04  1/2
  *MUI   05  2
- *MOV   23  1/2
- *MVI   24  2
- *DIV   29  1/2
- *DVI   30  2
- *CMP   31  1/2
- *CPI   32  2
- *LDA   06  2
- *STA   07  2
- *CAL   08  2
- *CZ    09  2
- *CNZ   10  2
- *CP    11  2
- *CNP   12  2
- *JMP   13  2
- *JZ    14  2
- *JNZ   15  2
- *JP    16  2
- *JNP   17  2
- *RET   18  1
- *RZ    19  1
- *RNZ   20  1
- *RP    21  1
- *RNP   22  1
- *INR   25  1
- *DCR   26  1
- *PUSH  27  1
- *POP   28  1
+ *MOV   06  1/2
+ *MVI   07  2
+ *DIV   08  1/2
+ *DVI   09  2
+ *CMP   10  1/2
+ *CPI   11  2
+ *LDA   12  2
+ *STA   13  2
+ *CALL  14  2
+ *CZ    15  2
+ *CNZ   16  2
+ *CP    17  2
+ *CNP   18  2
+ *JMP   19  2
+ *JZ    20  2
+ *JNZ   21  2
+ *JP    22  2
+ *JNP   23  2
+ *RET   24  1
+ *RZ    25  1
+ *RNZ   26  1
+ *RP    27  1
+ *RNP   28  1
+ *INR   29  1
+ *DCR   30  1
+ *PUSH  31  1
+ *POP   32  1
  *
  */
+ 
+ void ADD(int, int, int);
+ //add normal register addressing
+ void ADI(int, int int);
+ //imidiate addressing, the 3rd argument gives the address
+ //from where the 3rd argument will be obtained
+ 
+ 

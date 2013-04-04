@@ -36,6 +36,7 @@ void writeChunk(FILE *fout, int chunk){
     sprintf(strChunk,"%d ", chunk);
     fputs(strChunk, fout);
 }
+void* instructionFunctionArray[33];
 
 int execute(){
     int return_status = 0;
@@ -55,17 +56,26 @@ int execute(){
             if(oprnd2 == 0){
                 //instruction is 2 bytes for sure
                 //take the operand 2 from the next byte
-                oprnd2 = *(PC+1);
+                oprnd2 = *(PC + 1);
                 PC = PC + 2;
+                //call the instruction function
+                
+            }
+            else{
+                //instruction is of one byte
+                PC = PC + 1;
+                //call the instruction function with the operands
+                
             }
         }
         else{
             //instruction is one byte
             PC = PC + 1;
+            //call the instruction with its operands 
         }
     }
     else{
-        return_status = 1
+        return_status = 1;
     }
     return return_status;
 }
@@ -103,7 +113,7 @@ int main (int argc, char *argv[]){
         if(strcmp(argv[2], "quiet") == 0){
             printf("\nQuiet Mode\n===========\n");
             while(*PC != 0){
-                execute(PC);
+                execute();
             }
             for(i = 0; i < LEN; i++){
                 writeChunk(fout, memory[i]);
@@ -111,7 +121,7 @@ int main (int argc, char *argv[]){
         }else if(strcmp(argv[2],"trace") == 0){
             printf("\nTrace Mode\n=============\n");
             while(*PC != 0){
-                execute(PC);
+                execute();
                 for(i = 0; i < LEN; i++){
                     writeChunk(fout, memory[i]);
                 }
@@ -121,7 +131,7 @@ int main (int argc, char *argv[]){
         }else if(strcmp(argv[2],"step") == 0){
             printf("\nStep Mode\n===========\n");
             while(*PC != 0){
-                execute(PC);
+                execute();
                 for(i = 0; i < LEN; i++){
                     writeChunk(fout, memory[i]);
                 }
