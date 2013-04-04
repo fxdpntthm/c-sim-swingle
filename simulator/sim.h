@@ -8,7 +8,7 @@ int readChunk(FILE*);
 void writeChunk(FILE*, int);
 /*the int value is written on to the file*/
 
-int execute(int*);
+int execute();
 /*executes the instruction
  *and increments the PC according to the instruction
  *

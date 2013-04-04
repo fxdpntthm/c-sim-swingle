@@ -37,7 +37,7 @@ void writeChunk(FILE *fout, int chunk){
     fputs(strChunk, fout);
 }
 
-int execute(int *PC){
+int execute(){
     int return_status = 0;
     int chunk = *PC;
    
@@ -51,7 +51,18 @@ int execute(int *PC){
     //check if opcode is valid
     if(opcode >= 0 && opcode <= 32){
         //check if instruction is of 1 or 2 bytes
-        if()
+        if(opcode <= 17){
+            if(oprnd2 == 0){
+                //instruction is 2 bytes for sure
+                //take the operand 2 from the next byte
+                oprnd2 = *(PC+1);
+                PC = PC + 2;
+            }
+        }
+        else{
+            //instruction is one byte
+            PC = PC + 1;
+        }
     }
     else{
         return_status = 1
