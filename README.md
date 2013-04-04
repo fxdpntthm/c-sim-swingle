@@ -21,13 +21,14 @@ Label(opt) opcode operand1, operand2(opt)
 + Indirect Addressing (use of M)
 
 Register Addressing and Indirect Addressing format:
-+ XXYYZZ
++ XXYYZZ (ext ref)
  (XX)->Opcode
- (YY)->Operand1
+ (YY)->Operand1(can be registers or M)
  (ZZ)->Operand2
 
-Immediate Addressing Format: 
-+ XXYYZZ
+Immediate Addressing Format(2 bytes): 
++ XXYY00 data
   (XX)->Opcode
-  (YY)->operand1
-  (ZZ)->value
+  (YY)->operand1(can be registers or M)
+  (00)->operand2
+  data->stored in next byte
