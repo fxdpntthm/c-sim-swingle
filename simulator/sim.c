@@ -260,7 +260,8 @@ void STA(int op1, int op2){
     mem_counter = mem_counter + 2;
 }
 void CALL(int addr, int p){
-    SP = &memory[mem_counter];
+    printf("\n\t\tIN CALL %0x, %d,");
+    SP = &memory[mem_counter + 1];
     SP--;
     PC = &memory[addr];
     mem_counter = addr;
@@ -351,15 +352,18 @@ void JNP(int addr, int p){
     }
 }
 void RET(int q, int p){
-    PC = &memory[*SP];
-    mem_counter = *SP;
+    printf("\n\t\tIN RET %d, %d",)
     SP++;
+    PC = &(memory[*SP]);
+    mem_counter = *SP;
+    
 }
 void RZ(int q, int p){
     if(SW == 10){
+        SP++;
         PC = &memory[*SP];
         mem_counter = *SP;
-        SP++;    
+            
     }else{
         PC = PC + 2;
         mem_counter = mem_counter + 2;
@@ -367,9 +371,10 @@ void RZ(int q, int p){
 }
 void RNZ(int q, int p){
     if(SW != 10){
+        SP++;
         PC = &memory[*SP];
         mem_counter = *SP;
-        SP++;    
+            
     }else{
         PC = PC + 2;
         mem_counter = mem_counter + 2;
@@ -377,9 +382,9 @@ void RNZ(int q, int p){
 }
 void RP(int q, int p){
     if(SW%10 == 0){
+        SP++;
         PC = &memory[*SP];
         mem_counter = *SP;
-        SP++;    
     }else{
         PC = PC + 2;
         mem_counter = mem_counter + 2;
@@ -387,9 +392,9 @@ void RP(int q, int p){
 }
 void RNP(int q, int p){
     if(SW%10 != 0){
+        SP++;
         PC = &memory[*SP];
         mem_counter = *SP;
-        SP++;    
     }else{
         PC = PC + 2;
         mem_counter = mem_counter + 2;
@@ -475,21 +480,21 @@ int execute(){
                 //take the operand 2 from the next byte
                 byteflag = 1;
                 //call the instruction function
-                printf("\n%x %d, %d, %d, %d\n",PC, opcode, oprn1, oprn2, byteflag);
+                printf("\n%d %x %d, %d, %d, %d\n",mem_counter, PC, opcode, oprn1, oprn2, byteflag);
                 (*instructionFunctionArray[opcode])(oprn1, *(PC + 1));
                 
             }
             else{
                 //instruction is of one byte
                 //call the instruction function with the operands
-                printf("\n%x %d, %d, %d, %d\n",PC, opcode, oprn1, oprn2, byteflag);
+                printf("\n%d %x %d, %d, %d, %d\n",mem_counter, PC, opcode, oprn1, oprn2, byteflag);
                 (*instructionFunctionArray[opcode])(oprn1, oprn2);
             }
         }
         else{
             //instruction is one byte
             //call the instruction with its operands 
-            printf("\n%x %d, %d, %d, %d\n",PC, opcode, oprn1, oprn2, byteflag);
+            printf("\n%d %x %d, %d, %d, %d\n",mem_counter, PC, opcode, oprn1, oprn2, byteflag);
             (*instructionFunctionArray[opcode])(oprn1, oprn2);
         }
     }
