@@ -1,6 +1,25 @@
 /*
  *contains prototypes for sim.c functions
  */
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+#define LEN 4096
+
+//registers and data space
+
+int memory[LEN];
+
+int A, B, C, D;
+
+int *M;
+
+int SW, *SP, *PC;
+
+int* registerArray[5] = {&SW, &A, &B, &C, &D};
+
+int mem_counter;
  
 int readChunk(FILE*);
 /*Reads the characters form the file and returns the int value*/
@@ -57,10 +76,42 @@ int execute();
  *
  */
  
- void ADD(int, int, int);
- //add normal register addressing
- void ADI(int, int int);
- //imidiate addressing, the 3rd argument gives the address
- //from where the 3rd argument will be obtained
- 
- 
+void ADD(int, int);
+//add with normal register addressing
+
+void ADI(int, int);
+//imidiate addressing, the 3rd argument gives the address
+//from where the 3rd argument will be obtained
+
+void SUB(int, int);
+void SUI(int, int);
+void MUL(int, int);
+void MUI(int, int);
+void MOV(int, int);
+void MVI(int, int);
+void DIV(int, int);
+void DVI(int, int);
+void CMP(int, int);
+void CPI(int, int);
+void LDA(int, int);
+void STA(int, int);
+void CALL(int, int);
+void CZ(int, int);
+void CNZ(int, int);
+void CP(int, int);
+void CNP(int, int);
+void JMP(int, int);
+void JP(int, int);
+void JNP(int, int);
+void JZ(int, int);
+void JNZ(int, int);
+void RET(int, int);
+void RZ(int, int);
+void RNZ(int, int);
+void RP(int, int);
+void RNP(int, int);
+void INR(int, int);
+void DCR(int, int);
+void PUSH(int, int);
+void POP(int, int);
+

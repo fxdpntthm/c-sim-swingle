@@ -1,19 +1,4 @@
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
 #include"sim.h"
-
-#define LEN 4096
-
-void *structions[32];
-
-//registers and data space
-
-int memory[LEN];
-
-int A = 0, B = 0, C = 0, D = 0;
-int *M = memory;
-int SW, *SP = (memory+LEN), *PC = memory;
 
 //functions
 int readChunk(FILE* fin){
@@ -28,15 +13,270 @@ int readChunk(FILE* fin){
         c = getc(fin);
         i++;
     }
+    while(i<10){
+        convert_buffer[i] = '\0';
+        i++;
+    }
     value = atoi(convert_buffer);
     return value;
 }
 void writeChunk(FILE *fout, int chunk){
-    char strChunk[10];
+    char strChunk[10] = {'\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0', '\0'};
     sprintf(strChunk,"%d ", chunk);
     fputs(strChunk, fout);
 }
-void* instructionFunctionArray[33];
+void ADD(int op1, int op2){
+    *registerArray[op1] = *registerArray[op1] + *registerArray[op2];
+    if(*registerArray[op1] == 0){
+        SW = 10;
+    }else{
+        if(*registerArray[op1] > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+}
+
+void ADI(int op1, int op2){
+    *registerArray[op1] = *registerArray[op1] + op2;
+    if(*registerArray[op1] == 0){
+        SW = 10;
+    }else{
+        if(*registerArray[op1] > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+}
+
+void SUB(int op1, int op2){
+*registerArray[op1] = *registerArray[op1] - *registerArray[op2];
+    if(*registerArray[op1] == 0){
+        SW = 10;
+    }else{
+        if(*registerArray[op1] > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+}
+
+void SUI(int op1, int op2){
+*registerArray[op1] = *registerArray[op1] - op2;
+    if(*registerArray[op1] == 0){
+        SW = 10;
+    }else{
+        if(*registerArray[op1] > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+}
+void MUL(int op1, int op2){
+*registerArray[op1] = *registerArray[op1] * *registerArray[op2];
+    if(*registerArray[op1] == 0){
+        SW = 10;
+    }else{
+        if(*registerArray[op1] > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+}
+void MUI(int op1, int op2){
+*registerArray[op1] = *registerArray[op1] * op2;
+    if(*registerArray[op1] == 0){
+        SW = 10;
+    }else{
+        if(*registerArray[op1] > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+}
+void MOV(int op1, int op2){
+    *registerArray[op1] = *registerArray[op2];
+}
+void MVI(int op1, int op2){
+    *registerArray[op1] = op2;
+}
+void DIV(int op1, int op2){
+    if(op2!=0){
+        *registerArray[op1] = *registerArray[op1] / *registerArray[op2];
+        if(*registerArray[op1] == 0){
+            SW = 10;
+        }else{
+            if(*registerArray[op1] > 0){
+                SW = 00;
+            }else{
+                SW = 01;
+            }
+        }
+    }else{
+        *registerArray[op1] = 0;
+    }
+}
+void DVI(int op1, int op2){
+    if(op2 != 0){
+            *registerArray[op1] = *registerArray[op1] / op2;
+            if(*registerArray[op1] == 0){
+                SW = 10;
+            }else{
+                if(*registerArray[op1] > 0){
+                    SW = 00;
+                }else{
+                    SW = 01;
+                }
+            }
+
+    }else{
+        *registerArray[op1] = 0;    
+    }
+}
+void CMP(int op1, int op2){
+    
+    int result;
+    result = *registerArray[op1] - *registerArray[op2];
+        if(result == 0){
+            SW = 10;
+        }else{
+            if(result > 0){
+                SW = 00;
+            }else{
+                SW = 01;
+            }
+        }
+
+}
+void CPI(int op1, int op2){
+    int result;
+    result = *registerArray[op1] - op2;
+        if(result == 0){
+            SW = 10;
+        }else{
+            if(result > 0){
+                SW = 00;
+            }else{
+                SW = 01;
+            }
+        }
+    
+}
+
+void LDA(int op1, int op2){
+    *registerArray[01] = memory[op2];
+}
+void STA(int op1, int op2){
+    memory[op2] = *registerArray[1];
+}
+void CALL(int addr, int p){
+    SP = &memory[mem_counter];
+    SP--;
+    PC = &memory[addr];
+}
+void CZ(int addr, int p){
+    if(SW = 10){
+        SP = &memory[mem_counter];
+        SP--;
+        PC = &memory[addr];  
+    }
+}
+void CNZ(int addr, int p){
+    if(SW != 10){
+        SP = &memory[mem_counter];
+        SP--;
+        PC = &memory[addr];  
+    }
+}
+void CP(int addr, int p){
+    if(SW%10 == 0){
+        SP = &memory[mem_counter];
+        SP--;
+        PC = &memory[addr];  
+    }
+}
+void CNP(int addr, int p){
+    if(SW%10 != 0){
+        SP = &memory[mem_counter];
+        SP--;
+        PC = &memory[addr];  
+    }
+}
+void JMP(int addr, int p){
+    PC = &memory[addr];
+}
+void JZ(int addr, int p){
+    if(SW == 10){
+        PC = &memory[addr];
+    }
+}
+void JNZ(int addr, int p){
+    if(SW != 10){
+        PC = &memory[addr];
+    }
+}
+void JP(int addr, int p){
+    if(SW%10 == 0){
+        PC = &memory[addr];
+    }
+}
+void JNP(int addr, int p){
+    if(SW%10 != 0){
+        PC = &memory[addr];
+    }
+}
+void RET(int q, int p){
+    PC = &memory[*SP];
+    SP++;
+}
+void RZ(int q, int p){
+    if(SW == 10){
+        PC = &memory[*SP];
+        SP++;    
+    }
+}
+void RNZ(int q, int p){
+    if(SW != 10){
+        PC = &memory[*SP];
+        SP++;    
+    }
+}
+void RP(int q, int p){
+    if(SW%10 == 0){
+        PC = &memory[*SP];
+        SP++;    
+    }
+}
+void RNP(int q, int p){
+    if(SW%10 != 0){
+        PC = &memory[*SP];
+        SP++;    
+    }
+}
+void INR(int op1, int p){
+    registerArray[op1]++;
+}
+void DCR(int op1, int p){
+    registerArray[op1]--;
+}
+void PUSH(int op1, int p){
+    *SP = *registerArray[op1];
+    SP--;
+}
+void POP(int op1, int p){
+    SP++;
+    *registerArray[op1] = *SP;
+}
+
+
+void (*instructionFunctionArray[33])(int, int) = {&ADD, &ADI, &SUB, &SUI, &MUL, &MUI, &MOV, &MVI, &DIV, &DVI, &CMP, &CPI, &LDA, &STA, &CALL, &CZ, &CNZ, &CP, &CNP, &JMP, &JZ, &JNZ, &JP, &JNP, &RET, &RZ, &RNZ, &RP, &RNP, &INR, &DCR, &PUSH, &POP};
+
 
 int execute(){
     int return_status = 0;
@@ -46,32 +286,35 @@ int execute(){
     //convert to hash table later on for optimized code
    
     int opcode = chunk/10000;
-    int oprnd1 = (chunk%10000)/100;
-    int oprnd2 = (chunk%100);
+    int oprn1 = (chunk%10000)/100;
+    int oprn2 = (chunk%100);
    
     //check if opcode is valid
     if(opcode >= 0 && opcode <= 32){
-        //check if instruction is of 1 or 2 bytes
-        if(opcode <= 17){
-            if(oprnd2 == 0){
+        //check if instruction is of 2 operands
+        if(opcode <= 23){
+            if(oprn2 == 0){
                 //instruction is 2 bytes for sure
                 //take the operand 2 from the next byte
-                oprnd2 = *(PC + 1);
                 PC = PC + 2;
+                mem_counter = mem_counter+2;
                 //call the instruction function
-                
+                (*instructionFunctionArray[opcode])(oprn1, *(PC + 1));
             }
             else{
                 //instruction is of one byte
                 PC = PC + 1;
+                mem_counter = mem_counter+1;
                 //call the instruction function with the operands
-                
+                (*instructionFunctionArray[opcode])(oprn1, oprn2);
             }
         }
         else{
             //instruction is one byte
             PC = PC + 1;
+            mem_counter = mem_counter+1;
             //call the instruction with its operands 
+            (*instructionFunctionArray[opcode])(oprn1, oprn2);
         }
     }
     else{
@@ -99,22 +342,33 @@ int main (int argc, char *argv[]){
         for(i = 0; i < LEN; i++){
             memory[i] = readChunk(fin);
         }
+        for (i = 0; i < LEN; i += 1){
+                printf("%d ", memory[i]);
+        }
         close(fin);
         
         //initialize registers
         A = B = C = D = 0;
-        SW = 0;
+        SW = 10;
         PC = memory;
         SP = (memory + LEN);
+        mem_counter = 0;
+        M = memory;
         
         //simulate
         fout = fopen(argv[1],"w");
         fflush(fout);
         if(strcmp(argv[2], "quiet") == 0){
             printf("\nQuiet Mode\n===========\n");
+            
             while(*PC != 0){
                 execute();
             }
+            printf("++++++++++++++++++++++++++++++++++++");
+            for (i = 0; i < LEN; i += 1){
+                printf("%d ", memory[i]);
+            }
+            
             for(i = 0; i < LEN; i++){
                 writeChunk(fout, memory[i]);
             }            
