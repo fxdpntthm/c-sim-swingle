@@ -115,15 +115,15 @@ void MUL(int op1, int op2){
         mem_counter = mem_counter+1;
     }else{
         result = *registerArray[op1] * memory[op2];
-        *registerArray[op1] = abs(*registerArray[op1] * memory[op2];)
+        *registerArray[op1] = abs(result);
         PC = PC + 2;
         mem_counter = mem_counter+2;
         byteflag = 0;
     }
-    if(*registerArray[op1] == 0){
+    if(result == 0){
         SW = 10;
     }else{
-        if(*registerArray[op1] > 0){
+        if(result > 0){
             SW = 00;
         }else{
             SW = 01;
@@ -162,6 +162,7 @@ void MVI(int op1, int op2){
     mem_counter = mem_counter+2;
 }
 void DIV(int op1, int op2){
+    int result;
     if(byteflag == 1){
         op2 = memory[op2];
         byteflag = 0;
@@ -173,11 +174,12 @@ void DIV(int op1, int op2){
         mem_counter = mem_counter + 2;
     }
     if(op2!=0){
-        *registerArray[op1] = *registerArray[op1] / *registerArray[op2];
-        if(*registerArray[op1] == 0){
+        result = *registerArray[op1] / *registerArray[op2];
+        *registerArray[op1] = abs(result);
+        if(result == 0){
             SW = 10;
         }else{
-            if(*registerArray[op1] > 0){
+            if(result > 0){
                 SW = 00;
             }else{
                 SW = 01;
@@ -189,16 +191,17 @@ void DIV(int op1, int op2){
 }
 void DVI(int op1, int op2){
     if(op2 != 0){
-            *registerArray[op1] = *registerArray[op1] / op2;
-            if(*registerArray[op1] == 0){
-                SW = 10;
+        int result = *registerArray[op1] / op2;
+        *registerArray[op1] = abs(result);
+        if(result == 0){
+            SW = 10;
+        }else{
+            if(result > 0){
+                SW = 00;
             }else{
-                if(*registerArray[op1] > 0){
-                    SW = 00;
-                }else{
-                    SW = 01;
-                }
+                SW = 01;
             }
+        }
 
     }else{
         *registerArray[op1] = 0;    
@@ -210,11 +213,11 @@ void CMP(int op1, int op2){
     
     int result;
     if(byteflag == 0){
-        result = *registerArray[op1] * *registerArray[op2];
+        result = *registerArray[op1] - *registerArray[op2];
         PC = PC + 1;
         mem_counter = mem_counter + 1;
     }else{
-        result = *registerArray[op1] * memory[op2];
+        result = *registerArray[op1] - memory[op2];
         PC = PC + 2;
         byteflag = 0;
         mem_counter = mem_counter + 2;
@@ -393,14 +396,34 @@ void RNP(int q, int p){
     }
 }
 void INR(int op1, int p){
-    (*registerArray[op1])++;
+    int result = *registerArray[op1] + 1;
+    if(result == 0){
+        SW = 10;
+    }else{
+        if(result > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+    abs(result);
     printf("\n\t\tIN INR %d", *registerArray[op1]);
     PC = PC + 1;
     mem_counter = mem_counter + 1;
     byteflag = 0;
 }
 void DCR(int op1, int p){
-    (*registerArray[op1])--;
+    int result = *registerArray[op1] - 1;
+    if(result == 0){
+        SW = 10;
+    }else{
+        if(result > 0){
+            SW = 00;
+        }else{
+            SW = 01;
+        }
+    }
+    abs(result);
     printf("\n\t\tIN DCR %d", *registerArray[op1]);
     PC = PC + 1;
     mem_counter = mem_counter + 1;
@@ -411,12 +434,14 @@ void PUSH(int op1, int p){
     SP--;
     PC = PC + 1;
     mem_counter = mem_counter + 1;
+    byteflag = 0;
 }
 void POP(int op1, int p){
     SP++;
     *registerArray[op1] = *SP;
     PC = PC + 1;
     mem_counter = mem_counter + 1;
+    byteflag = 0;
 }
 
 
