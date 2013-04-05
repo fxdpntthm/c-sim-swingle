@@ -26,7 +26,19 @@ void writeChunk(FILE *fout, int chunk){
     fputs(strChunk, fout);
 }
 void ADD(int op1, int op2){
-    *registerArray[op1] = *registerArray[op1] + *registerArray[op2];
+    printf("\nIN ADD\n %d, %d", op1, op2);
+    printf("\nnothing here");
+    printf("\n%d", byteflag);
+    if(byteflag == 0){
+        *registerArray[op1] = *registerArray[op1] + *registerArray[op2];
+        PC = PC + 1;
+        mem_counter = mem_counter+1;   
+    }else{
+        *registerArray[op1] = *registerArray[op1] + memory[op2];
+        byteflag = 0;
+        PC = PC + 2;
+        mem_counter = mem_counter+2;
+    }
     if(*registerArray[op1] == 0){
         SW = 10;
     }else{
@@ -49,10 +61,22 @@ void ADI(int op1, int op2){
             SW = 01;
         }
     }
+    PC = PC + 2;
+    mem_counter = mem_counter+2;
 }
 
 void SUB(int op1, int op2){
-*registerArray[op1] = *registerArray[op1] - *registerArray[op2];
+    if(byteflag == 0){
+        *registerArray[op1] = *registerArray[op1] - *registerArray[op2];
+        PC = PC + 1;
+        mem_counter = mem_counter+1;
+    }else{
+        *registerArray[op1] = *registerArray[op1] - memory[op2];
+        PC = PC + 2;
+        byteflag = 0;
+        mem_counter = mem_counter+2;
+    }
+    
     if(*registerArray[op1] == 0){
         SW = 10;
     }else{
@@ -75,9 +99,20 @@ void SUI(int op1, int op2){
             SW = 01;
         }
     }
+    PC = PC + 2;
+    mem_counter = mem_counter+2;
 }
 void MUL(int op1, int op2){
-*registerArray[op1] = *registerArray[op1] * *registerArray[op2];
+    if(byteflag == 0){
+        *registerArray[op1] = *registerArray[op1] * *registerArray[op2];
+        PC = PC + 1;
+        mem_counter = mem_counter+1;
+    }else{
+        *registerArray[op1] = *registerArray[op1] * memory[op2];
+        PC = PC + 2;
+        mem_counter = mem_counter+2;
+        byteflag = 0;
+    }
     if(*registerArray[op1] == 0){
         SW = 10;
     }else{
@@ -99,14 +134,37 @@ void MUI(int op1, int op2){
             SW = 01;
         }
     }
+    PC = PC + 2;
+    mem_counter = mem_counter+2;
 }
 void MOV(int op1, int op2){
-    *registerArray[op1] = *registerArray[op2];
+    if(byteflag == 0){
+        *registerArray[op1] = *registerArray[op2];
+        PC = PC + 1;
+        mem_counter = mem_counter + 1;
+    }else{
+        *registerArray[op1] = memory[op2];
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
+    }
+    
 }
 void MVI(int op1, int op2){
     *registerArray[op1] = op2;
+    PC = PC + 2;
+    mem_counter = mem_counter+2;
 }
 void DIV(int op1, int op2){
+    if(byteflag == 1){
+        op2 = memory[op2];
+        byteflag = 0;
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
+        byteflag = 0;
+    }else{
+        PC = PC +1;
+        mem_counter = mem_counter + 2;
+    }
     if(op2!=0){
         *registerArray[op1] = *registerArray[op1] / *registerArray[op2];
         if(*registerArray[op1] == 0){
@@ -138,140 +196,216 @@ void DVI(int op1, int op2){
     }else{
         *registerArray[op1] = 0;    
     }
+    PC = PC + 2;
+    mem_counter = mem_counter + 2;
 }
 void CMP(int op1, int op2){
     
     int result;
-    result = *registerArray[op1] - *registerArray[op2];
-        if(result == 0){
-            SW = 10;
+    if(byteflag == 0){
+        result = *registerArray[op1] * *registerArray[op2];
+        PC = PC + 1;
+        mem_counter = mem_counter + 1;
+    }else{
+        result = *registerArray[op1] * memory[op2];
+        PC = PC + 2;
+        byteflag = 0;
+        mem_counter = mem_counter + 2;
+    }
+    if(result == 0){
+        SW = 10;
+    }else{
+        if(result > 0){
+            SW = 00;
         }else{
-            if(result > 0){
-                SW = 00;
-            }else{
-                SW = 01;
-            }
+            SW = 01;
         }
+    }
 
 }
 void CPI(int op1, int op2){
     int result;
     result = *registerArray[op1] - op2;
-        if(result == 0){
-            SW = 10;
+    if(result == 0){
+        SW = 10;
+    }else{
+        if(result > 0){
+            SW = 00;
         }else{
-            if(result > 0){
-                SW = 00;
-            }else{
-                SW = 01;
-            }
+            SW = 01;
         }
-    
+    }
+    PC = PC + 2;
+    mem_counter = mem_counter + 2;
 }
 
 void LDA(int op1, int op2){
     *registerArray[01] = memory[op2];
+    PC = PC + 2;
+    mem_counter = mem_counter + 2;
 }
 void STA(int op1, int op2){
     memory[op2] = *registerArray[1];
+    PC = PC + 2;
+    mem_counter = mem_counter + 2;
 }
 void CALL(int addr, int p){
     SP = &memory[mem_counter];
     SP--;
     PC = &memory[addr];
+    mem_counter = addr;
 }
 void CZ(int addr, int p){
     if(SW = 10){
         SP = &memory[mem_counter];
         SP--;
-        PC = &memory[addr];  
+        PC = &memory[addr];
+        mem_counter = addr;  
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
+    
 }
 void CNZ(int addr, int p){
     if(SW != 10){
         SP = &memory[mem_counter];
         SP--;
-        PC = &memory[addr];  
+        PC = &memory[addr];
+        mem_counter = addr;  
+    }else{
+        PC = PC + 2;    
+        mem_counter = mem_counter + 2;
     }
 }
 void CP(int addr, int p){
     if(SW%10 == 0){
         SP = &memory[mem_counter];
         SP--;
-        PC = &memory[addr];  
+        PC = &memory[addr];
+        mem_counter = addr;  
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void CNP(int addr, int p){
     if(SW%10 != 0){
         SP = &memory[mem_counter];
         SP--;
-        PC = &memory[addr];  
+        PC = &memory[addr];
+        mem_counter = addr;  
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void JMP(int addr, int p){
     PC = &memory[addr];
+    mem_counter = addr;
 }
 void JZ(int addr, int p){
     if(SW == 10){
         PC = &memory[addr];
+        mem_counter = addr;
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void JNZ(int addr, int p){
     if(SW != 10){
         PC = &memory[addr];
+        mem_counter = addr;
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void JP(int addr, int p){
     if(SW%10 == 0){
         PC = &memory[addr];
+        mem_counter = addr;
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void JNP(int addr, int p){
     if(SW%10 != 0){
         PC = &memory[addr];
+        mem_counter = addr;
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void RET(int q, int p){
     PC = &memory[*SP];
+    mem_counter = *SP;
     SP++;
 }
 void RZ(int q, int p){
     if(SW == 10){
         PC = &memory[*SP];
+        mem_counter = *SP;
         SP++;    
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void RNZ(int q, int p){
     if(SW != 10){
         PC = &memory[*SP];
+        mem_counter = *SP;
         SP++;    
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void RP(int q, int p){
     if(SW%10 == 0){
         PC = &memory[*SP];
+        mem_counter = *SP;
         SP++;    
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void RNP(int q, int p){
     if(SW%10 != 0){
         PC = &memory[*SP];
+        mem_counter = *SP;
         SP++;    
+    }else{
+        PC = PC + 2;
+        mem_counter = mem_counter + 2;
     }
 }
 void INR(int op1, int p){
     registerArray[op1]++;
+    PC = PC + 1;
+    mem_counter = mem_counter + 1;
 }
 void DCR(int op1, int p){
     registerArray[op1]--;
+    PC = PC + 1;
+    mem_counter = mem_counter + 1;
 }
 void PUSH(int op1, int p){
     *SP = *registerArray[op1];
     SP--;
+    PC = PC + 1;
+    mem_counter = mem_counter + 1;
 }
 void POP(int op1, int p){
     SP++;
     *registerArray[op1] = *SP;
+    PC = PC + 1;
+    mem_counter = mem_counter + 1;
 }
 
 
@@ -296,23 +430,20 @@ int execute(){
             if(oprn2 == 0){
                 //instruction is 2 bytes for sure
                 //take the operand 2 from the next byte
-                PC = PC + 2;
-                mem_counter = mem_counter+2;
+                byteflag = 1;
                 //call the instruction function
                 (*instructionFunctionArray[opcode])(oprn1, *(PC + 1));
+                
             }
             else{
                 //instruction is of one byte
                 PC = PC + 1;
-                mem_counter = mem_counter+1;
                 //call the instruction function with the operands
                 (*instructionFunctionArray[opcode])(oprn1, oprn2);
             }
         }
         else{
             //instruction is one byte
-            PC = PC + 1;
-            mem_counter = mem_counter+1;
             //call the instruction with its operands 
             (*instructionFunctionArray[opcode])(oprn1, oprn2);
         }
@@ -320,6 +451,7 @@ int execute(){
     else{
         return_status = 1;
     }
+    byteflag = 0;
     return return_status;
 }
 
@@ -342,9 +474,9 @@ int main (int argc, char *argv[]){
         for(i = 0; i < LEN; i++){
             memory[i] = readChunk(fin);
         }
-        for (i = 0; i < LEN; i += 1){
-                printf("%d ", memory[i]);
-        }
+/*        for (i = 0; i < LEN; i += 1){*/
+/*                printf("%d ", memory[i]);*/
+/*        }*/
         close(fin);
         
         //initialize registers
@@ -364,10 +496,9 @@ int main (int argc, char *argv[]){
             while(*PC != 0){
                 execute();
             }
-            printf("++++++++++++++++++++++++++++++++++++");
-            for (i = 0; i < LEN; i += 1){
-                printf("%d ", memory[i]);
-            }
+/*            for (i = 0; i < LEN; i += 1){*/
+/*                printf("%d ", memory[i]);*/
+/*            }*/
             
             for(i = 0; i < LEN; i++){
                 writeChunk(fout, memory[i]);

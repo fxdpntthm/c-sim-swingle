@@ -21,6 +21,8 @@ int* registerArray[5] = {&SW, &A, &B, &C, &D};
 
 int mem_counter;
  
+int byteflag = 0;
+
 int readChunk(FILE*);
 /*Reads the characters form the file and returns the int value*/
 
