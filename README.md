@@ -43,14 +43,14 @@ shows whether arithmetic operation had the following properties
 Instruction codes
  Op    num length(bytes)
  ==    === =============
-*ADD   00  1/2
-*ADI   01  2
-*SUB   02  1/2
-*SUI   03  2
-*MUL   04  1/2
-*MUI   05  2
-*MOV   06  1/2
-*MVI   07  2
+*ADD   00  1/2 (checked)
+*ADI   01  2   (checked)
+*SUB   02  1/2 (checked)
+*SUI   03  2   (checked)
+*MUL   04  1/2 (checked)
+*MUI   05  2   (checked)
+*MOV   06  1/2 
+*MVI   07  2   (checked)
 *DIV   08  1/2
 *DVI   09  2
 *CMP   10  1/2
@@ -72,8 +72,8 @@ Instruction codes
 *RNZ   26  1
 *RP    27  1
 *RNP   28  1
-*INR   29  1
-*DCR   30  1
-*PUSH  31  1
+*INR   29  1   (checked)
+*DCR   30  1   (checked) 
+*PUSH  31  1   (checked)
 *POP   32  1
 
