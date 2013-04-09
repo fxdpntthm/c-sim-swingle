@@ -40,9 +40,10 @@ shows whether arithmetic operation had the following properties
 + X1 = 1 indicates result is zero X1 = 0 indicates result is nonzero
 + X0 = 1 indicates result is negative X0 = 0 indicates result is positive
 
-Instruction codes
-  Op    num length(bytes)
-  ==    === =============
+Instruction codes:
+
++  Op    num length(bytes)
++  ==    === =============
 * ADD   00  1/2 (checked)
 * ADI   01  2   (checked)
 * SUB   02  1/2 (checked)
