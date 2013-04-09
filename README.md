@@ -1,7 +1,7 @@
 simulator for an abstract machine
 
-contains a GUI for assembler, linker loader and executing the program
-on the virtual environment
+contains a GUI for assembler, linkage editor and simulator to run the executable
+in the virtual environment
 
 Machine Architecture
 ====================
