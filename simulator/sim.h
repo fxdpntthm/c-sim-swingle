@@ -7,20 +7,26 @@
 
 #define LEN 4096
 
-//registers and data space
+//global registers and data space
 
+//memory in use
 int memory[LEN];
 
+//general purpose registers
 int A, B, C, D;
 
+//memory pointer
 int *M;
 
+//special purpose registers
 int SW, *SP, *PC;
 
 int* registerArray[5] = {&SW, &A, &B, &C, &D};
 
 int mem_counter;
- 
+
+//byteflag if set to 1 instruction is 2 byte
+//if set to 0 byte is 1 byte instruction
 int byteflag = 0;
 
 int readChunk(FILE*);
