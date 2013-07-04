@@ -10,7 +10,8 @@ Machine Architecture
 + word addressable
 + 4 general purpose registers A, B, C, D
 + 1 memory pointer M
-+ Special purpose registers SP, SW, PC
++ Special purpose registers SP (Stack Pointer), SW(Status Word), PC (Program
+  Counter)
 
 instruction in the form of
 Label(opt) opcode operand1, operand2(opt)
@@ -30,7 +31,7 @@ Immediate Addressing Format(2 bytes):
   * (XX)->Opcode
   * (YY)->operand1
   * (00)->operand2
-  * data->stored in next byte
+  * data->stored in next byte (This acts as op2)
   
 SW (Status word) format X1X0
 shows whether arithmetic operation had the following properties
@@ -39,6 +40,7 @@ shows whether arithmetic operation had the following properties
 + Zero is considered as positive
 + X1 = 1 indicates result is zero X1 = 0 indicates result is nonzero
 + X0 = 1 indicates result is negative X0 = 0 indicates result is positive
++ hence the valid SW formats will be: 01 00 11
 
 Instruction codes:
 
