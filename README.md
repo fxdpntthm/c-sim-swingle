@@ -44,8 +44,8 @@ shows whether arithmetic operation had the following properties
 
 Instruction codes:
 
-+  Op    num length(bytes)
-   ==    === =============
+Op    num length(bytes)
+==    === =============
 * ADD   00  1/2 (checked)
 * ADI   01  2   (checked)
 * SUB   02  1/2 (checked)
