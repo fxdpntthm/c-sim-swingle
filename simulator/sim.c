@@ -464,8 +464,7 @@ int execute(){
     int return_status = 0;
     int chunk = *PC;
    
-    //use switch case right now
-    //convert to hash table later on for optimized code
+    //using hash table for optimized code
    
     int opcode = chunk/10000;
     int oprn1 = (chunk%10000)/100;
